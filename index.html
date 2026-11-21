@@ -1,0 +1,132 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0B1120"><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icon-192.png"><title>GERSAME VIAJES</title>
+<style>
+:root{--bg:#0B1120;--card:#151F32;--blue:#2563EB;--g:#10B981;--a:#F59E0B;--r:#EF4444;--t:#E5E7EB;--m:#94A3B8}
+*{box-sizing:border-box;margin:0}body{background:var(--bg);color:var(--t);font:15px system-ui,sans-serif;padding-bottom:90px}
+header{padding:calc(12px + env(safe-area-inset-top)) 16px 8px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+h1{font-size:18px;letter-spacing:1px}header input{background:none;border:0;padding:0;margin:0;color:var(--m);font-size:12px;width:100%}header input#veh{color:var(--blue);font-weight:700;font-size:13px}
+#rk{background:#10B98122;color:var(--g);padding:6px 10px;border-radius:20px;font-weight:700;font-size:13px;white-space:nowrap}
+main{padding:0 12px}section{display:none}section.on{display:block}
+.card{background:var(--card);border-radius:16px;padding:14px;margin:10px 0}.card h3{font-size:14px;margin-bottom:4px}
+label{display:block;font-size:12px;color:var(--m);margin-top:8px}
+input,select{width:100%;padding:11px;border-radius:10px;border:1px solid #243049;background:#0F1729;color:var(--t);font-size:16px;margin-top:4px}
+.row{display:flex;gap:8px}.row>*{flex:1}
+.btn{width:100%;padding:14px;border:0;border-radius:12px;background:var(--blue);color:#fff;font-size:16px;font-weight:700;margin-top:12px}
+.btn.s{background:#243049;margin-top:8px;padding:11px;font-size:14px}.btn.g{background:var(--g)}.btn.a{background:var(--a);color:#000}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid .card{margin:0}
+.k{font-size:11px;color:var(--m)}.v{font-size:21px;font-weight:800;margin:2px 0}.sm{font-size:12px;color:var(--m)}
+.bar{height:10px;background:#0F1729;border-radius:9px;overflow:hidden;margin:8px 0}.bar i{display:block;height:100%;border-radius:9px}
+.seg{display:flex;background:var(--card);border-radius:12px;padding:3px;margin:6px 0}.seg b{flex:1;text-align:center;padding:8px 0;border-radius:10px;font-size:13px;color:var(--m)}.seg b.on{background:var(--blue);color:#fff}
+.pv{background:#0F1729;border-radius:10px;padding:10px;margin-top:10px;font-size:13px;display:grid;gap:3px}.pv div,.it{display:flex;justify-content:space-between;gap:8px}
+.it{padding:9px 0;border-bottom:1px solid #243049;font-size:13px;align-items:center}.it:last-child{border:0}
+nav{position:fixed;bottom:0;left:0;right:0;background:#0F1729;display:flex;padding:6px 6px calc(6px + env(safe-area-inset-bottom));border-top:1px solid #243049}
+nav button{flex:1;background:none;border:0;color:var(--m);font-size:11px;padding:6px}nav button span{display:block;font-size:20px}nav button.on{color:var(--blue)}
+.g{color:var(--g)}.r{color:var(--r)}.a{color:var(--a)}.bl{color:var(--blue)}.ic{background:none;border:0;font-size:15px;padding:4px}
+#toast{position:fixed;top:12px;left:50%;transform:translateX(-50%);background:var(--g);color:#000;padding:8px 16px;border-radius:20px;font-weight:700;opacity:0;transition:.3s;pointer-events:none;z-index:9}#toast.on{opacity:1}
+.day{cursor:pointer}
+</style></head><body>
+<div id="toast"></div>
+<header><div style="flex:1;min-width:0"><h1>GERSAME VIAJES</h1><input id="veh" onchange="S.c.veh=this.value;save()"><input id="sub" onchange="S.c.sub=this.value;save()"></div><div id="rk">S/ 0.00 / km</div></header>
+<main>
+<section id="inicio" class="on">
+<div class="seg" id="seg"></div><div id="dash"></div>
+<div class="card" oninput="prev()"><h3>🚗 Registrar carrera</h3>
+<label>Fecha<input type="date" id="td"></label>
+<label>Ruta<input id="tr" placeholder="Eten -> UCV"></label>
+<div class="row"><label>Monto cobrado (S/)<input id="ta" type="number" inputmode="decimal" step="0.01"></label><label>Distancia (km)<input id="tk" type="number" inputmode="decimal" step="0.1"></label></div>
+<label>Modalidad<select id="tp" onchange="prev()"></select></label>
+<div class="pv" id="pv"></div>
+<button class="btn g" onclick="addTrip()">Guardar Carrera</button></div>
+</section>
+<section id="gastos">
+<button class="btn" onclick="tg('tf')">⛽ Registrar Tanqueo</button>
+<div class="card" id="tf" hidden oninput="gal()"><label>Fecha<input type="date" id="tf-d"></label>
+<div class="row"><label>Precio por galón (S/)<input id="tf-p" type="number" inputmode="decimal" step="0.01"></label><label>Monto total (S/)<input id="tf-m" type="number" inputmode="decimal" step="0.01"></label></div>
+<label>Odómetro actual (km, opcional)<input id="tf-o" type="number" inputmode="decimal"></label><div class="sm" id="tf-g" style="margin-top:8px">Galones: 0.00</div>
+<button class="btn a" onclick="addFuel()">Guardar tanqueo</button></div>
+<button class="btn s" onclick="tg('ef')">➕ Registrar Otro Egreso</button>
+<div class="card" id="ef" hidden><label>Fecha<input type="date" id="ef-d"></label>
+<div class="row"><label>Monto (S/)<input id="ef-m" type="number" inputmode="decimal" step="0.01"></label><label>Categoría<select id="ef-c"></select></label></div>
+<label>Nota (opcional)<input id="ef-n"></label><button class="btn a" onclick="addExp()">Guardar egreso</button></div>
+<div class="card"><h3>Egresos recientes</h3><div class="row"><input type="date" id="lf-d" onchange="glist()"><select id="lf-c" onchange="glist()"></select></div><div id="gl"></div></div>
+</section>
+<section id="historial"><button class="btn s" onclick="csv(x=>x.slice(0,7)==today().slice(0,7),'mes')">⬇️ Exportar mes (CSV)</button><div id="hl"></div></section>
+<section id="ajustes"><div id="aj"></div></section>
+</main>
+<nav id="nav"></nav>
+<script>
+const $=s=>document.querySelector(s),p2=n=>String(n).padStart(2,'0'),fd=d=>d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate()),today=()=>fd(new Date()),f2=n=>(+n||0).toFixed(2),M=n=>'S/ '+f2(n),uid=()=>Date.now()*1000+Math.floor(Math.random()*1000);
+const CATS=['Peajes','Lavados','Cochera','Multas','Recargas / Datos','Llantas','Mantenimiento / Taller','Otros'],MT='Mantenimiento / Taller';
+let S=JSON.parse(localStorage.gv||'null')||{c:{veh:'GLORY 580',sub:'Contabilidad GLP • Chiclayo',meta:80,rend:0,precio:0,mm:'pct',mv:10,oil:5000,cid:'',pl:[{n:'inDrive',p:12.85},{n:'Directo / Particular',p:0}]},t:[],f:[],e:[],o0:0};
+let per='hoy',tab='inicio',open={},tok=null,st;
+const save=()=>{localStorage.gv=JSON.stringify(S);if(tok){clearTimeout(st);st=setTimeout(()=>up().catch(()=>{}),3000)}};
+const toast=m=>{const t=$('#toast');t.textContent=m;t.className='on';setTimeout(()=>t.className='',2200)};
+const inP=d=>per=='hoy'?d==today():per=='7'?d>=fd(new Date(Date.now()-6*864e5)):per=='mes'?d.slice(0,7)==today().slice(0,7):1;
+function fund(){let ev=[];S.t.forEach(t=>ev.push([t.d,0,t.ap,0]));S.e.filter(e=>e.cat==MT).forEach(e=>ev.push([e.d,1,+e.m,e.id]));ev.sort((a,b)=>a[0]<b[0]?-1:a[0]>b[0]?1:a[1]-b[1]);let b=0,x={};ev.forEach(e=>{if(!e[1])b+=e[2];else{let t=Math.min(b,e[2]);b-=t;x[e[3]]=e[2]-t}});return{b,x}}
+function calc(p){const F=fund(),r={br:0,com:0,fu:0,ap:0,ot:0,ex:0,n:0,km:0};
+S.t.filter(t=>p(t.d)).forEach(t=>{r.br+=t.amt;r.com+=t.com;r.ap+=t.ap;r.n++;r.km+=t.km});
+S.f.filter(f=>p(f.d)).forEach(f=>r.fu+=+f.m);
+S.e.filter(e=>p(e.d)).forEach(e=>e.cat==MT?r.ex+=F.x[e.id]||0:r.ot+=+e.m);
+r.net=r.br-r.com-r.fu-r.ap-r.ot-r.ex;r.eg=r.com+r.fu+r.ot+r.ex;return r}
+function tv(amt,km,pl){const c=S.c;return{com:amt*pl.p/100,fu:c.rend>0?km/c.rend*c.precio:0,ap:c.mm=='pct'?amt*c.mv/100:km*c.mv}}
+function prev(){const a=+$('#ta').value||0,k=+$('#tk').value||0,pl=S.c.pl[$('#tp').value||0],v=tv(a,k,pl);
+$('#pv').innerHTML=`<div><span>Tarifa por km</span><b>${k>0?M(a/k):'—'}</b></div><div><span>Comisión app</span><b class=r>${M(v.com)}</b></div><div><span>Combustible estimado</span><b class=r>${M(v.fu)}</b></div><div><span>Aporte mantenimiento</span><b class=a>${M(v.ap)}</b></div><div><span>Ganancia limpia estimada</span><b class=g>${M(a-v.com-v.fu-v.ap)}</b></div>`}
+function addTrip(){const a=+$('#ta').value,k=+$('#tk').value,pl=S.c.pl[$('#tp').value];if(!(a>0))return toast('Ingresa el monto');
+S.t.push({id:uid(),d:$('#td').value||today(),r:$('#tr').value,amt:a,km:k,pct:pl.p,...tv(a,k,pl)});save();['tr','ta','tk'].forEach(i=>$('#'+i).value='');prev();render();toast('Carrera guardada ✔')}
+function dash(){const r=calc(inP),td=calc(d=>d==today()),F=fund(),km=Math.max(0,S.t.reduce((a,t)=>a+t.km,0)-S.o0),c=S.c,pc=Math.max(0,Math.min(100,c.meta>0?td.net/c.meta*100:0)),op=Math.min(100,km/c.oil*100);
+$('#rk').textContent=M(r.km>0?r.net/r.km:0)+' / km';
+$('#dash').innerHTML=`<div class=card><h3>🎯 Meta neta de hoy</h3><div class=it style="border:0;padding:0"><b>${M(td.net)} / ${M(c.meta)}</b><b>${pc.toFixed(0)}%</b></div><div class=bar><i style="width:${pc}%;background:var(--g)"></i></div><div class=sm>${td.net>=c.meta?'¡Meta cumplida! 🎉':'Faltan '+M(c.meta-td.net)}</div></div>
+<div class=grid><div class=card><div class=k>Ganancia Neta Real</div><div class="v g">${M(r.net)}</div><div class=sm>${M(r.km>0?r.net/r.km:0)} / km</div></div>
+<div class=card><div class=k>Cobrado Bruto</div><div class="v bl">${M(r.br)}</div><div class=sm>${r.n} carreras • ${r.km.toFixed(0)} km</div></div>
+<div class=card><div class=k>Alcancía Mantenimiento</div><div class="v a">${M(F.b)}</div><div class=sm>Disponible para taller</div></div>
+<div class=card><div class=k>Combustible + Comis. + Otros</div><div class="v r">${M(r.eg)}</div><div class=sm>⛽ ${M(r.fu)} • 📱 ${M(r.com)} • ${M(r.ot+r.ex)}</div></div></div>
+<div class=card><h3>🛢️ Próximo cambio de aceite</h3><div class=sm>${km.toFixed(0)} / ${c.oil} km</div><div class=bar><i style="width:${op}%;background:${op>85?'var(--r)':'var(--a)'}"></i></div><button class="btn s" onclick="if(confirm('¿Reiniciar contador a 0 km?')){S.o0=S.t.reduce((a,t)=>a+t.km,0);save();render()}">Reiniciar 0 km</button></div>`}
+const tg=i=>{const e=$('#'+i);e.hidden=!e.hidden;$('#'+(i=='tf'?'ef':'tf')).hidden=1};
+function gal(){const p=+$('#tf-p').value,m=+$('#tf-m').value;$('#tf-g').textContent='Galones: '+f2(p>0?m/p:0)}
+function addFuel(){const p=+$('#tf-p').value,m=+$('#tf-m').value;if(!(m>0&&p>0))return toast('Completa precio y monto');S.f.push({id:uid(),d:$('#tf-d').value||today(),p,m,g:m/p,odo:+$('#tf-o').value||0});if(!S.c.precio){S.c.precio=p}save();['tf-p','tf-m','tf-o'].forEach(i=>$('#'+i).value='');gal();$('#tf').hidden=1;render();toast('Tanqueo guardado ⛽')}
+function addExp(){const m=+$('#ef-m').value;if(!(m>0))return toast('Ingresa el monto');S.e.push({id:uid(),d:$('#ef-d').value||today(),m,cat:$('#ef-c').value,n:$('#ef-n').value});save();['ef-m','ef-n'].forEach(i=>$('#'+i).value='');$('#ef').hidden=1;render();toast('Egreso guardado')}
+const K={t:'t',f:'f',e:'e'};
+function del(k,id){if(confirm('¿Eliminar este registro?')){S[k]=S[k].filter(x=>x.id!=id);save();render()}}
+function ed(k,id){const x=S[k].find(x=>x.id==id);if(k=='t'){const a=prompt('Monto cobrado (S/)',x.amt);if(a===null)return;const km=prompt('Distancia (km)',x.km);if(km===null)return;x.amt=+a;x.km=+km;Object.assign(x,tv(x.amt,x.km,{p:x.pct}))}
+else{const m=prompt('Monto (S/)',x.m);if(m===null)return;x.m=+m;if(k=='f')x.g=x.p>0?x.m/x.p:0;else{const n=prompt('Nota',x.n||'');if(n!==null)x.n=n}}save();render()}
+const btns=(k,id)=>`<button class=ic onclick="ed('${k}',${id})">✏️</button><button class=ic onclick="del('${k}',${id})">🗑️</button>`;
+function glist(){const fd_=$('#lf-d').value,fc=$('#lf-c').value;let a=[...S.f.map(x=>({...x,k:'f',cat:'Tanqueo',n:f2(x.g)+' gal'})),...S.e.map(x=>({...x,k:'e'}))].filter(x=>(!fd_||x.d==fd_)&&(!fc||x.cat==fc)).sort((a,b)=>a.d<b.d?1:-1);
+$('#gl').innerHTML=a.map(x=>`<div class=it><div><b>${x.cat}</b> <span class=sm>${x.d}${x.n?' • '+x.n:''}</span></div><div><b class=r>${M(x.m)}</b>${btns(x.k,x.id)}</div></div>`).join('')||'<div class=sm style="padding:10px 0">Sin egresos registrados</div>'}
+const dl=d=>new Date(d+'T00:00').toLocaleDateString('es-PE',{weekday:'long',day:'numeric',month:'short'});
+function hist(){const ds=[...new Set([...S.t,...S.f,...S.e].map(x=>x.d))].sort().reverse();
+$('#hl').innerHTML=ds.map(d=>{const r=calc(x=>x==d),o=open[d];return`<div class="card day"><div onclick="open['${d}']=!open['${d}'];hist()"><b style="text-transform:capitalize">${dl(d)}</b> <span class=sm>• ${r.n} carreras • ${r.km.toFixed(0)} km</span>
+<div class=grid style="margin-top:8px;gap:6px"><div><span class=k>Bruto</span><br><b class=bl>${M(r.br)}</b></div><div><span class=k>Egresos / Comis.</span><br><b class=r>${M(r.eg)}</b></div><div><span class=k>Mantenimiento</span><br><b class=a>${M(r.ap)}</b></div><div><span class=k>Ganancia limpia</span><br><b class=g>${M(r.net)}</b></div></div></div>
+${o?`<div style="margin-top:10px">${S.t.filter(t=>t.d==d).map(t=>`<div class=it><div>${t.r||'Carrera'}<div class=sm>${t.km} km • com. ${M(t.com)}</div></div><div><b>${M(t.amt)}</b> <span class=g>${M(t.amt-t.com-t.fu-t.ap)}</span>${btns('t',t.id)}</div></div>`).join('')}
+${S.f.filter(x=>x.d==d).map(x=>`<div class=it><div>⛽ Tanqueo <span class=sm>${f2(x.g)} gal</span></div><div><b class=r>${M(x.m)}</b>${btns('f',x.id)}</div></div>`).join('')}
+${S.e.filter(x=>x.d==d).map(x=>`<div class=it><div>${x.cat} <span class=sm>${x.n||''}</span></div><div><b class=r>${M(x.m)}</b>${btns('e',x.id)}</div></div>`).join('')}
+<button class="btn s" onclick="csv(x=>x=='${d}','${d}')">⬇️ Exportar día (CSV)</button></div>`:''}</div>`}).join('')||'<div class=card><div class=sm>Aún no hay registros.</div></div>'}
+function csv(p,n){const q=v=>'"'+String(v??'').replace(/"/g,'""')+'"';let L=[['tipo','fecha','ruta_nota','km','monto','comision','combustible_est','aporte_mant','ganancia_limpia'].join(',')];
+S.t.filter(t=>p(t.d)).forEach(t=>L.push(['carrera',t.d,q(t.r),t.km,f2(t.amt),f2(t.com),f2(t.fu),f2(t.ap),f2(t.amt-t.com-t.fu-t.ap)].join(',')));
+S.f.filter(x=>p(x.d)).forEach(x=>L.push(['tanqueo',x.d,q(f2(x.g)+' gal'),'',f2(x.m)].join(',')));
+S.e.filter(x=>p(x.d)).forEach(x=>L.push(['egreso',x.d,q(x.cat+' '+(x.n||'')),'',f2(x.m)].join(',')));dlf('\ufeff'+L.join('\n'),'gersame_'+n+'.csv','text/csv')}
+function dlf(t,n,ty){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:ty}));a.download=n;a.click()}
+const F_=(l,k,t='number')=>`<label>${l}<input type=${t} ${t=='number'?'step=0.01 inputmode=decimal':''} value="${S.c[k]}" onchange="S.c[k]=${t=='number'?'+':''}this.value;save();render()"></label>`;
+function ajustes(){const c=S.c;$('#aj').innerHTML=`<div class=card><h3>Parámetros</h3>${F_('Meta neta diaria (S/)','meta')}${F_('Rendimiento (km por galón)','rend')}${F_('Precio referencial del galón (S/)','precio')}${F_('Límite km cambio de aceite','oil')}
+<label>Alcancía de mantenimiento<select onchange="S.c.mm=this.value;save();ajustes();render()"><option value=pct ${c.mm=='pct'?'selected':''}>% diario sobre ingreso bruto</option><option value=km ${c.mm=='km'?'selected':''}>S/ por km</option></select></label>${F_(c.mm=='pct'?'Porcentaje (%)':'S/ por km','mv')}</div>
+<div class=card><h3>Plataformas y comisión</h3>${c.pl.map((p,i)=>`<div class=row><input value="${p.n}" onchange="S.c.pl[${i}].n=this.value;save();render()"><input type=number step=0.01 value="${p.p}" onchange="S.c.pl[${i}].p=+this.value;save();render()"></div>`).join('')}<button class="btn s" onclick="S.c.pl.push({n:'Otra',p:0});save();ajustes();render()">+ Añadir modalidad</button></div>
+<div class=card><h3>☁️ Respaldo</h3>${F_('Google Client ID (OAuth)','cid','text')}<button class=btn onclick="up().catch(e=>toast('Error con Drive'))">Conectar con Google Drive y respaldar</button><button class="btn s" onclick="down().catch(e=>toast('Error con Drive'))">Restaurar desde Google Drive</button>
+<button class="btn s" onclick="dlf(JSON.stringify(S),'gersame_viajes_backup.json','application/json')">Exportar respaldo JSON</button><button class="btn s" onclick="$('#imp').click()">Importar respaldo JSON</button><input type=file id=imp accept=".json" hidden onchange="imp(this.files[0])"></div>
+<div class=card><h3>Datos</h3><button class="btn s" onclick="demo()">Cargar datos de prueba</button><button class="btn s" style="color:var(--r)" onclick="if(confirm('¿Borrar TODOS los datos?')){S.t=[];S.f=[];S.e=[];S.o0=0;save();render()}">Borrar todos los datos</button></div>`}
+async function imp(f){try{const j=JSON.parse(await f.text());if(!j.c||!j.t)throw 0;S=j;save();render();toast('Respaldo importado')}catch(e){toast('Archivo inválido')}}
+function demo(){S.c.rend=S.c.rend||40;S.c.precio=S.c.precio||8;for(let i=0;i<7;i++){const d=fd(new Date(Date.now()-i*864e5));for(let j=0;j<8;j++){const a=6+Math.random()*20,k=2+Math.random()*10,pl=S.c.pl[0];S.t.push({id:uid(),d,r:'Demo',amt:+a.toFixed(2),km:+k.toFixed(1),pct:pl.p,...tv(a,k,pl)})}if(i%2==0)S.f.push({id:uid(),d,p:8,m:60,g:7.5,odo:0})}save();render();toast('Datos de prueba cargados')}
+const loadG=()=>new Promise(r=>{if(window.google&&google.accounts)return r();const s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.onload=r;document.head.appendChild(s)});
+async function auth(){if(!S.c.cid){toast('Ingresa tu Client ID de Google');return 0}await loadG();return new Promise(res=>google.accounts.oauth2.initTokenClient({client_id:S.c.cid,scope:'https://www.googleapis.com/auth/drive.file',callback:r=>{tok=r.access_token;res(tok)}}).requestAccessToken())}
+const api=(u,o={})=>fetch(u,{...o,headers:{Authorization:'Bearer '+tok,...(o.headers||{})}}).then(r=>r.json());
+const find=async q=>(await api('https://www.googleapis.com/drive/v3/files?fields=files(id)&q='+encodeURIComponent(q+' and trashed=false'))).files[0];
+async function folder(){const f=await find("name='GERSAME VIAJES' and mimeType='application/vnd.google-apps.folder'");if(f)return f.id;return(await api('https://www.googleapis.com/drive/v3/files',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:'GERSAME VIAJES',mimeType:'application/vnd.google-apps.folder'})})).id}
+async function up(){if(!tok&&!await auth())return;const fid=await folder(),f=await find("name='gersame_viajes_backup.json' and '"+fid+"' in parents"),b='gv',m=JSON.stringify(f?{}:{name:'gersame_viajes_backup.json',parents:[fid]});
+await api('https://www.googleapis.com/upload/drive/v3/files'+(f?'/'+f.id:'')+'?uploadType=multipart',{method:f?'PATCH':'POST',headers:{'Content-Type':'multipart/related; boundary='+b},body:`--${b}\r\nContent-Type: application/json\r\n\r\n${m}\r\n--${b}\r\nContent-Type: application/json\r\n\r\n${JSON.stringify(S)}\r\n--${b}--`});toast('Respaldo en Drive ☁️')}
+async function down(){if(!tok&&!await auth())return;const fid=await folder(),f=await find("name='gersame_viajes_backup.json' and '"+fid+"' in parents");if(!f)return toast('No hay respaldo en Drive');const cid=S.c.cid;S=await(await fetch('https://www.googleapis.com/drive/v3/files/'+f.id+'?alt=media',{headers:{Authorization:'Bearer '+tok}})).json();S.c.cid=cid;save();render();toast('Datos restaurados')}
+function go(t){tab=t;document.querySelectorAll('section').forEach(s=>s.className=s.id==t?'on':'');document.querySelectorAll('nav button').forEach(b=>b.className=b.dataset.t==t?'on':'');render()}
+function render(){$('#veh').value=S.c.veh;$('#sub').value=S.c.sub;const v=$('#tp').value||0;$('#tp').innerHTML=S.c.pl.map((p,i)=>`<option value=${i}>${p.n} ${p.p}%</option>`).join('');$('#tp').value=S.c.pl[v]?v:0;
+$('#seg').innerHTML=[['hoy','Hoy'],['7','7 Días'],['mes','Mes'],['todo','Todo']].map(([k,l])=>`<b class="${per==k?'on':''}" onclick="per='${k}';render()">${l}</b>`).join('');
+dash();prev();if(tab=='gastos')glist();if(tab=='historial')hist();if(tab=='ajustes')ajustes()}
+$('#nav').innerHTML=[['inicio','🏠','Inicio'],['gastos','⛽','Gastos'],['historial','📅','Historial'],['ajustes','⚙️','Ajustes']].map(([t,i,l])=>`<button data-t=${t} onclick="go('${t}')"><span>${i}</span>${l}</button>`).join('');
+$('#lf-c').innerHTML='<option value="">Todas</option><option>Tanqueo</option>'+CATS.map(c=>`<option>${c}</option>`).join('');$('#ef-c').innerHTML=CATS.map(c=>`<option>${c}</option>`).join('');
+['td','tf-d','ef-d'].forEach(i=>$('#'+i).value=today());go('inicio');
+if('serviceWorker' in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js');
+</script></body></html>
