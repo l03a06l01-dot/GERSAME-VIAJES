@@ -1,34 +1,39 @@
-<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0B1120"><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icon-192.png"><title>GERSAME VIAJES</title>
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="theme-color" content="#0B1120"><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icon-192.png"><title>GERSAME VIAJES</title>
 <style>
 :root{--bg:#0B1120;--card:#151F32;--blue:#2563EB;--g:#10B981;--a:#F59E0B;--r:#EF4444;--t:#E5E7EB;--m:#94A3B8}
-*{box-sizing:border-box;margin:0}body{background:var(--bg);color:var(--t);font:15px system-ui,sans-serif;padding-bottom:90px}
-header{padding:calc(12px + env(safe-area-inset-top)) 16px 8px;display:flex;justify-content:space-between;align-items:center;gap:8px}
-h1{font-size:18px;letter-spacing:1px}header input{background:none;border:0;padding:0;margin:0;color:var(--m);font-size:12px;width:100%}header input#veh{color:var(--blue);font-weight:700;font-size:13px}
-#rk{background:#10B98122;color:var(--g);padding:6px 10px;border-radius:20px;font-weight:700;font-size:13px;white-space:nowrap}
-main{padding:0 12px}section{display:none}section.on{display:block}
-.card{background:var(--card);border-radius:16px;padding:14px;margin:10px 0}.card h3{font-size:14px;margin-bottom:4px}
-label{display:block;font-size:12px;color:var(--m);margin-top:8px}
-input,select{width:100%;padding:11px;border-radius:10px;border:1px solid #243049;background:#0F1729;color:var(--t);font-size:16px;margin-top:4px}
-.row{display:flex;gap:8px}.row>*{flex:1}
-.btn{width:100%;padding:14px;border:0;border-radius:12px;background:var(--blue);color:#fff;font-size:16px;font-weight:700;margin-top:12px}
-.btn.s{background:#243049;margin-top:8px;padding:11px;font-size:14px}.btn.g{background:var(--g)}.btn.a{background:var(--a);color:#000}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid .card{margin:0}
-.k{font-size:11px;color:var(--m)}.v{font-size:21px;font-weight:800;margin:2px 0}.sm{font-size:12px;color:var(--m)}
-.bar{height:10px;background:#0F1729;border-radius:9px;overflow:hidden;margin:8px 0}.bar i{display:block;height:100%;border-radius:9px}
-.seg{display:flex;background:var(--card);border-radius:12px;padding:3px;margin:6px 0}.seg b{flex:1;text-align:center;padding:8px 0;border-radius:10px;font-size:13px;color:var(--m)}.seg b.on{background:var(--blue);color:#fff}
-.pv{background:#0F1729;border-radius:10px;padding:10px;margin-top:10px;font-size:13px;display:grid;gap:3px}.pv div,.it{display:flex;justify-content:space-between;gap:8px}
-.it{padding:9px 0;border-bottom:1px solid #243049;font-size:13px;align-items:center}.it:last-child{border:0}
-nav{position:fixed;bottom:0;left:0;right:0;background:#0F1729;display:flex;padding:6px 6px calc(6px + env(safe-area-inset-bottom));border-top:1px solid #243049}
-nav button{flex:1;background:none;border:0;color:var(--m);font-size:11px;padding:6px}nav button span{display:block;font-size:20px}nav button.on{color:var(--blue)}
-.g{color:var(--g)}.r{color:var(--r)}.a{color:var(--a)}.bl{color:var(--blue)}.ic{background:none;border:0;font-size:15px;padding:4px}
-#toast{position:fixed;top:12px;left:50%;transform:translateX(-50%);background:var(--g);color:#000;padding:8px 16px;border-radius:20px;font-weight:700;opacity:0;transition:.3s;pointer-events:none;z-index:9}#toast.on{opacity:1}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--t);font:17px/1.35 system-ui,sans-serif;padding-bottom:calc(96px + env(safe-area-inset-bottom));touch-action:manipulation;overscroll-behavior-y:contain}
+header{padding:calc(14px + env(safe-area-inset-top)) 14px 8px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+h1{font-size:22px;letter-spacing:1px}
+header input{background:none;border:0;padding:0;margin:0;min-height:0;color:var(--m);font-size:14px;width:100%}header input#veh{color:var(--blue);font-weight:700;font-size:16px}
+#rk{background:#10B98122;color:var(--g);padding:9px 13px;border-radius:20px;font-weight:800;font-size:16px;white-space:nowrap}
+main{padding:0 10px}section{display:none}section.on{display:block}
+.card{background:var(--card);border-radius:18px;padding:16px;margin:10px 0}.card h3{font-size:18px;margin-bottom:6px}
+label{display:block;font-size:14px;color:var(--m);margin-top:12px}
+input,select{width:100%;min-height:54px;padding:12px 14px;border-radius:12px;border:1px solid #243049;background:#0F1729;color:var(--t);font-size:18px;margin-top:5px}
+.row{display:flex;gap:10px}.row>*{flex:1;min-width:0}
+.btn{width:100%;min-height:58px;padding:14px;border:0;border-radius:14px;background:var(--blue);color:#fff;font-size:18px;font-weight:800;margin-top:14px}
+.btn.s{background:#243049;margin-top:10px;min-height:52px;font-size:16px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid .card{margin:0;padding:14px}
+.k{font-size:13px;color:var(--m)}.v{font-size:26px;font-weight:800;margin:3px 0}.sm{font-size:13px;color:var(--m)}
+.bar{height:14px;background:#0F1729;border-radius:9px;overflow:hidden;margin:10px 0}.bar i{display:block;height:100%;border-radius:9px}
+.seg{display:flex;background:var(--card);border-radius:14px;padding:4px;margin:8px 0;position:sticky;top:0;z-index:5}.seg b{flex:1;text-align:center;padding:13px 0;border-radius:11px;font-size:15px;color:var(--m)}.seg b.on{background:var(--blue);color:#fff}
+.pv{background:#0F1729;border-radius:12px;padding:12px;margin-top:12px;font-size:15px;display:grid;gap:6px}.pv div,.it{display:flex;justify-content:space-between;gap:8px}
+.it{padding:12px 0;border-bottom:1px solid #243049;font-size:15px;align-items:center}.it:last-child{border:0}
+nav{position:fixed;bottom:0;left:0;right:0;background:#0F1729;display:flex;padding:6px 6px calc(6px + env(safe-area-inset-bottom));border-top:1px solid #243049;z-index:9}
+nav button{flex:1;background:none;border:0;color:var(--m);font-size:12px;padding:4px;min-height:58px}nav button span{display:block;font-size:24px;width:60px;margin:0 auto 2px;border-radius:14px;padding:2px 0}nav button.on{color:#fff;font-weight:700}nav button.on span{background:#2563EB44}
+.g{color:var(--g)}.r{color:var(--r)}.a{color:var(--a)}.bl{color:var(--blue)}
+.btn.g{background:var(--g);color:#04130d}.btn.a{background:var(--a);color:#1a1000}.btn.s{color:var(--t)}
+.ic{background:none;border:0;font-size:20px;min-width:44px;min-height:44px}
+#toast{position:fixed;top:calc(12px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);background:var(--g);color:#000;padding:10px 18px;border-radius:20px;font-weight:700;opacity:0;transition:.3s;pointer-events:none;z-index:99}#toast.on{opacity:1}
 .day{cursor:pointer}
 </style></head><body>
 <div id="toast"></div>
 <header><div style="flex:1;min-width:0"><h1>GERSAME VIAJES</h1><input id="veh" onchange="S.c.veh=this.value;save()"><input id="sub" onchange="S.c.sub=this.value;save()"></div><div id="rk">S/ 0.00 / km</div></header>
 <main>
 <section id="inicio" class="on">
-<div class="seg" id="seg"></div><div id="dash"></div>
+<div class="seg" id="seg"></div><div id="d1"></div>
 <div class="card" oninput="prev()"><h3>🚗 Registrar carrera</h3>
 <label>Fecha<input type="date" id="td"></label>
 <label>Ruta<input id="tr" placeholder="Eten -> UCV"></label>
@@ -36,6 +41,7 @@ nav button{flex:1;background:none;border:0;color:var(--m);font-size:11px;padding
 <label>Modalidad<select id="tp" onchange="prev()"></select></label>
 <div class="pv" id="pv"></div>
 <button class="btn g" onclick="addTrip()">Guardar Carrera</button></div>
+<div id="dash"></div>
 </section>
 <section id="gastos">
 <button class="btn" onclick="tg('tf')">⛽ Registrar Tanqueo</button>
@@ -71,11 +77,10 @@ function tv(amt,km,pl){const c=S.c;return{com:amt*pl.p/100,fu:c.rend>0?km/c.rend
 function prev(){const a=+$('#ta').value||0,k=+$('#tk').value||0,pl=S.c.pl[$('#tp').value||0],v=tv(a,k,pl);
 $('#pv').innerHTML=`<div><span>Tarifa por km</span><b>${k>0?M(a/k):'—'}</b></div><div><span>Comisión app</span><b class=r>${M(v.com)}</b></div><div><span>Combustible estimado</span><b class=r>${M(v.fu)}</b></div><div><span>Aporte mantenimiento</span><b class=a>${M(v.ap)}</b></div><div><span>Ganancia limpia estimada</span><b class=g>${M(a-v.com-v.fu-v.ap)}</b></div>`}
 function addTrip(){const a=+$('#ta').value,k=+$('#tk').value,pl=S.c.pl[$('#tp').value];if(!(a>0))return toast('Ingresa el monto');
-S.t.push({id:uid(),d:$('#td').value||today(),r:$('#tr').value,amt:a,km:k,pct:pl.p,...tv(a,k,pl)});save();['tr','ta','tk'].forEach(i=>$('#'+i).value='');prev();render();toast('Carrera guardada ✔')}
+S.t.push({id:uid(),d:$('#td').value||today(),r:$('#tr').value,amt:a,km:k,pct:pl.p,...tv(a,k,pl)});save();['tr','ta','tk'].forEach(i=>$('#'+i).value='');prev();render();toast('Carrera guardada ✔');$('#ta').focus()}
 function dash(){const r=calc(inP),td=calc(d=>d==today()),F=fund(),km=Math.max(0,S.t.reduce((a,t)=>a+t.km,0)-S.o0),c=S.c,pc=Math.max(0,Math.min(100,c.meta>0?td.net/c.meta*100:0)),op=Math.min(100,km/c.oil*100);
 $('#rk').textContent=M(r.km>0?r.net/r.km:0)+' / km';
-$('#dash').innerHTML=`<div class=card><h3>🎯 Meta neta de hoy</h3><div class=it style="border:0;padding:0"><b>${M(td.net)} / ${M(c.meta)}</b><b>${pc.toFixed(0)}%</b></div><div class=bar><i style="width:${pc}%;background:var(--g)"></i></div><div class=sm>${td.net>=c.meta?'¡Meta cumplida! 🎉':'Faltan '+M(c.meta-td.net)}</div></div>
-<div class=grid><div class=card><div class=k>Ganancia Neta Real</div><div class="v g">${M(r.net)}</div><div class=sm>${M(r.km>0?r.net/r.km:0)} / km</div></div>
+$('#d1').innerHTML=`<div class=card><h3>🎯 Meta neta de hoy</h3><div class=it style="border:0;padding:0"><b>${M(td.net)} / ${M(c.meta)}</b><b>${pc.toFixed(0)}%</b></div><div class=bar><i style="width:${pc}%;background:var(--g)"></i></div><div class=sm>${td.net>=c.meta?'¡Meta cumplida! 🎉':'Faltan '+M(c.meta-td.net)}</div></div>`;$('#dash').innerHTML=`<div class=grid><div class=card><div class=k>Ganancia Neta Real</div><div class="v g">${M(r.net)}</div><div class=sm>${M(r.km>0?r.net/r.km:0)} / km</div></div>
 <div class=card><div class=k>Cobrado Bruto</div><div class="v bl">${M(r.br)}</div><div class=sm>${r.n} carreras • ${r.km.toFixed(0)} km</div></div>
 <div class=card><div class=k>Alcancía Mantenimiento</div><div class="v a">${M(F.b)}</div><div class=sm>Disponible para taller</div></div>
 <div class=card><div class=k>Combustible + Comis. + Otros</div><div class="v r">${M(r.eg)}</div><div class=sm>⛽ ${M(r.fu)} • 📱 ${M(r.com)} • ${M(r.ot+r.ex)}</div></div></div>
